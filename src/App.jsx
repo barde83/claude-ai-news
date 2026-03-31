@@ -4,6 +4,7 @@ import './App.css';
 function App() {
   const [news, setNews] = useState([]);
   const [lastUpdate, setLastUpdate] = useState(null);
+  const [error, setError] = useState(null);
   const [viewedNews, setViewedNews] = useState(() => {
     const stored = localStorage.getItem('viewedNews');
     return stored ? JSON.parse(stored) : [];
@@ -14,13 +15,16 @@ function App() {
       try {
         const response = await fetch('/news.json');
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          setError(`Failed to load news (${response.status})`);
+          return;
         }
         const data = await response.json();
         setNews(data.news || []);
         setLastUpdate(data.lastUpdate);
+        setError(null);
       } catch (error) {
         console.error('Error fetching news:', error);
+        setError('Network error while fetching news');
         setNews([]);
       }
     };
@@ -71,6 +75,12 @@ function App() {
           <p className="last-update">Last updated: {formatHeaderTimestamp(lastUpdate)}</p>
         )}
       </header>
+
+      {error && (
+        <div className="error-banner">
+          ⚠️ {error}
+        </div>
+      )}
 
       <main className="news-grid">
         {news.length === 0 ? (
