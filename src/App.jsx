@@ -42,8 +42,8 @@ function App() {
 
   const formatDateFr = (dateString) => {
     const date = new Date(dateString);
-    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-                    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
     const day = date.getDate();
     const month = months[date.getMonth()];
     return `${day} ${month}`;
