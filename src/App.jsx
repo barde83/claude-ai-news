@@ -81,7 +81,10 @@ function App() {
               {isNew(item.id) && <span className="badge-new">New</span>}
               <h3>{item.title}</h3>
               <p className="news-date">{formatDateFr(item.date)}</p>
-              <span className={`tag tag-${item.tag.toLowerCase().replace(/\s+/g, '')}`}>{item.tag}</span>
+              <span className={`tag tag-${item.tag.toLowerCase().replace(/\s+/g, '')}`}>
+                <span className="tag-dot"></span>
+                {item.tag}
+              </span>
               <a
                 href={item.link}
                 target="_blank"
