@@ -40,12 +40,35 @@ function App() {
     }
   };
 
+  const formatDateFr = (dateString) => {
+    const date = new Date(dateString);
+    const months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin',
+                    'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    return `${day} ${month}`;
+  };
+
+  const formatHeaderTimestamp = (dateString) => {
+    const date = new Date(dateString);
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+    const dayName = days[date.getDay()];
+    const dayNum = date.getDate();
+    const monthName = months[date.getMonth()];
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${dayName} ${dayNum}th of ${monthName} ${year} at ${hours}:${minutes} CEST`;
+  };
+
   return (
     <div className="app">
       <header className="header">
         <h1>Claude AI News</h1>
         {lastUpdate && (
-          <p className="last-update">Last updated: {new Date(lastUpdate).toLocaleString()}</p>
+          <p className="last-update">Last updated: {formatHeaderTimestamp(lastUpdate)}</p>
         )}
       </header>
 
@@ -57,8 +80,8 @@ function App() {
             <article key={item.id} className="news-card">
               {isNew(item.id) && <span className="badge-new">New</span>}
               <h3>{item.title}</h3>
-              <p className="news-date">{new Date(item.date).toLocaleDateString()}</p>
-              <span className="tag">{item.tag}</span>
+              <p className="news-date">{formatDateFr(item.date)}</p>
+              <span className={`tag tag-${item.tag.toLowerCase().replace(/\s+/g, '')}`}>{item.tag}</span>
               <a
                 href={item.link}
                 target="_blank"
