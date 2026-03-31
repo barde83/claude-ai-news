@@ -10,9 +10,22 @@ function App() {
   });
 
   useEffect(() => {
-    // TODO: Fetch news from news.json
-    // For now, placeholder
-    console.log('Fetching news...');
+    const fetchNews = async () => {
+      try {
+        const response = await fetch('/news.json');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setNews(data.news || []);
+        setLastUpdate(data.lastUpdate);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        setNews([]);
+      }
+    };
+
+    fetchNews();
   }, []);
 
   useEffect(() => {
@@ -20,6 +33,12 @@ function App() {
   }, [viewedNews]);
 
   const isNew = (newsId) => !viewedNews.includes(newsId);
+
+  const handleNewsClick = (newsId) => {
+    if (!viewedNews.includes(newsId)) {
+      setViewedNews([...viewedNews, newsId]);
+    }
+  };
 
   return (
     <div className="app">
@@ -40,7 +59,12 @@ function App() {
               <h3>{item.title}</h3>
               <p className="news-date">{new Date(item.date).toLocaleDateString()}</p>
               <span className="tag">{item.tag}</span>
-              <a href={item.link} target="_blank" rel="noopener noreferrer">
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleNewsClick(item.id)}
+              >
                 View source →
               </a>
             </article>

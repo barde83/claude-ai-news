@@ -1,4 +1,61 @@
 {
-  "lastUpdate": null,
-  "news": []
+  "lastUpdate": "2026-03-31T12:30:00Z",
+  "news": [
+    {
+      "id": "claude-3.5-update",
+      "title": "Claude 3.5 Achieves New Capabilities Milestone",
+      "date": "2026-03-31T10:00:00Z",
+      "tag": "Code",
+      "link": "https://twitter.com/claudeai/status/1234567890"
+    },
+    {
+      "id": "anthropic-blog-constitution",
+      "title": "Constitutional AI: Advancing Safety in Large Language Models",
+      "date": "2026-03-30T14:00:00Z",
+      "tag": "Code",
+      "link": "https://www.anthropic.com/blog/constitutional-ai"
+    },
+    {
+      "id": "claude-integration-announcement",
+      "title": "Claude Now Powers 500+ Applications Globally",
+      "date": "2026-03-29T09:30:00Z",
+      "tag": "Cowork",
+      "link": "https://twitter.com/claudeai/status/1234567891"
+    },
+    {
+      "id": "anthropic-research-paper",
+      "title": "Scaling Laws and Interpretability: New Research Findings",
+      "date": "2026-03-28T11:00:00Z",
+      "tag": "Code",
+      "link": "https://www.anthropic.com/research/scaling-laws"
+    },
+    {
+      "id": "ai-summit-2026",
+      "title": "Anthropic Joins Tech Leaders at AI Summit 2026",
+      "date": "2026-03-27T16:00:00Z",
+      "tag": "Misc",
+      "link": "https://ai-summit-2026.example.com/anthropic-keynote"
+    },
+    {
+      "id": "claude-api-v2-release",
+      "title": "Claude API v2 Released with Improved Performance",
+      "date": "2026-03-26T13:45:00Z",
+      "tag": "Code",
+      "link": "https://twitter.com/claudeai/status/1234567892"
+    },
+    {
+      "id": "anthropic-partnerships",
+      "title": "Strategic Partnerships Expand Claude's Reach",
+      "date": "2026-03-25T10:15:00Z",
+      "tag": "Cowork",
+      "link": "https://www.anthropic.com/blog/strategic-partnerships"
+    },
+    {
+      "id": "ai-ethics-roundtable",
+      "title": "Leading AI Voices Discuss Ethics and Safety",
+      "date": "2026-03-24T15:30:00Z",
+      "tag": "Misc",
+      "link": "https://ai-ethics-news.example.com/roundtable-2026"
+    }
+  ]
 }
