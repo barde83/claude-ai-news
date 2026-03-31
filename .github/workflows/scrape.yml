@@ -1,0 +1,32 @@
+name: Scrape Claude AI News
+
+on:
+  schedule:
+    # Runs every 2 days at 6:00 AM UTC
+    - cron: '0 6 */2 * *'
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Trigger scraper
+        run: npm run scrape
+        # TODO: Call Netlify function or run scraper directly
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "Claude Bot"
+          git config user.email "claude@anthropic.com"
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update news" && git push)
