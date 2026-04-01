@@ -1,61 +1,81 @@
 {
-  "lastUpdate": "2026-03-31T12:30:00Z",
+  "timestamp": "2026-04-01T08:32:31.940Z",
+  "count": 10,
+  "sources": {
+    "twitter_claudeai": 0,
+    "twitter_darioamodei": 0,
+    "release_notes": 10
+  },
   "news": [
     {
-      "id": "claude-3.5-update",
-      "title": "Claude 3.5 Achieves New Capabilities Milestone",
-      "date": "2026-03-31T10:00:00Z",
-      "tag": "Code",
-      "link": "https://twitter.com/claudeai/status/1234567890"
-    },
-    {
-      "id": "anthropic-blog-constitution",
-      "title": "Constitutional AI: Advancing Safety in Large Language Models",
-      "date": "2026-03-30T14:00:00Z",
-      "tag": "Code",
-      "link": "https://www.anthropic.com/blog/constitutional-ai"
-    },
-    {
-      "id": "claude-integration-announcement",
-      "title": "Claude Now Powers 500+ Applications Globally",
-      "date": "2026-03-29T09:30:00Z",
-      "tag": "Cowork",
-      "link": "https://twitter.com/claudeai/status/1234567891"
-    },
-    {
-      "id": "anthropic-research-paper",
-      "title": "Scaling Laws and Interpretability: New Research Findings",
-      "date": "2026-03-28T11:00:00Z",
-      "tag": "Code",
-      "link": "https://www.anthropic.com/research/scaling-laws"
-    },
-    {
-      "id": "ai-summit-2026",
-      "title": "Anthropic Joins Tech Leaders at AI Summit 2026",
-      "date": "2026-03-27T16:00:00Z",
+      "id": "release-2026-03-25-interactive-apps-in-claude-for-ios-and-a",
+      "title": "Interactive apps in Claude for iOS and Android",
+      "date": "2026-03-25T00:00:00.000Z",
       "tag": "Misc",
-      "link": "https://ai-summit-2026.example.com/anthropic-keynote"
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_cf2f800398"
     },
     {
-      "id": "claude-api-v2-release",
-      "title": "Claude API v2 Released with Improved Performance",
-      "date": "2026-03-26T13:45:00Z",
-      "tag": "Code",
-      "link": "https://twitter.com/claudeai/status/1234567892"
-    },
-    {
-      "id": "anthropic-partnerships",
-      "title": "Strategic Partnerships Expand Claude's Reach",
-      "date": "2026-03-25T10:15:00Z",
-      "tag": "Cowork",
-      "link": "https://www.anthropic.com/blog/strategic-partnerships"
-    },
-    {
-      "id": "ai-ethics-roundtable",
-      "title": "Leading AI Voices Discuss Ethics and Safety",
-      "date": "2026-03-24T15:30:00Z",
+      "id": "release-2026-03-23-computer-use-research-preview-in-cowork-",
+      "title": "Computer use research preview in Cowork and Claude Code + Dispatch improvements",
+      "date": "2026-03-23T00:00:00.000Z",
       "tag": "Misc",
-      "link": "https://ai-ethics-news.example.com/roundtable-2026"
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f8e4032efd"
+    },
+    {
+      "id": "release-2026-03-17-control-cowork-from-your-phone-with-a-pe",
+      "title": "Control Cowork from your phone with a persistent thread (research preview for Pro/Max)",
+      "date": "2026-03-17T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_6dc0f7cd1b"
+    },
+    {
+      "id": "release-2026-03-12-claude-creates-interactive-charts-diagra",
+      "title": "Claude creates interactive charts, diagrams and visualizations",
+      "date": "2026-03-12T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_33121cff9d"
+    },
+    {
+      "id": "release-2026-03-11-work-across-excel-and-powerpoint",
+      "title": "Work across Excel and PowerPoint",
+      "date": "2026-03-11T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_e67bacbb67"
+    },
+    {
+      "id": "release-2026-03-02-memory-for-free-users",
+      "title": "Memory for free users",
+      "date": "2026-03-02T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_9ec0154553"
+    },
+    {
+      "id": "release-2026-02-25-scheduled-tasks-in-cowork",
+      "title": "Scheduled tasks in Cowork",
+      "date": "2026-02-25T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_964c1d788c"
+    },
+    {
+      "id": "release-2026-02-24-cowork-plugins-and-admin-controls",
+      "title": "Cowork plugins and admin controls",
+      "date": "2026-02-24T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_7d608ca8a1"
+    },
+    {
+      "id": "release-2026-02-17-claude-sonnet-4-6-launch",
+      "title": "Claude Sonnet 4.6 launch",
+      "date": "2026-02-17T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_dc20f106c8"
+    },
+    {
+      "id": "release-2026-02-13-analytics-api-for-enterprise-plans",
+      "title": "Analytics API for Enterprise plans",
+      "date": "2026-02-13T00:00:00.000Z",
+      "tag": "Code",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_5837ae80ba"
     }
   ]
 }
