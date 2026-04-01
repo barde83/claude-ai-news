@@ -418,29 +418,29 @@ export default async (_req, _context) => {
     // 5. Persister les données (failsoft — writeFileSync() peut ne pas marcher en Netlify)
     await writeNews(allNews);
 
-    // 6. Retourner response avec données COMPLÈTES (pas juste preview)
-    // Netlify Functions ne garantissent pas writeFileSync() → les données sont dans la réponse
-    // Le frontend ou GitHub Actions peut les utiliser pour créer public/news.json
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        message: 'Scraping complet',
-        count: allNews.length,
-        timestamp: new Date().toISOString(),
-        sources: {
-          twitter_claudeai: claudeaiTweets.length,
-          twitter_darioamodei: darioTweets.length,
-          release_notes: releaseNotesNews.length,
-        },
-        // 🔑 Données complètes retournées (pas juste preview)
-        news: allNews,
-      }),
+    // 6. Retourner Response avec données COMPLÈTES (Netlify Functions v2 expects Response object)
+    const responseData = {
+      message: 'Scraping complet',
+      count: allNews.length,
+      timestamp: new Date().toISOString(),
+      sources: {
+        twitter_claudeai: claudeaiTweets.length,
+        twitter_darioamodei: darioTweets.length,
+        release_notes: releaseNotesNews.length,
+      },
+      // 🔑 Données complètes retournées (pas juste preview)
+      news: allNews,
     };
+
+    return new Response(JSON.stringify(responseData), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('[handler] Erreur critique :', error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 };
