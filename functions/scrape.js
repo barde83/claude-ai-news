@@ -21,6 +21,8 @@
 
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import fs from 'fs';
+import path from 'path';
 
 // ---------------------------------------------------------------------------
 // Configuration
@@ -169,17 +171,137 @@ export async function scrapeTwitter(handle) {
 }
 
 // ---------------------------------------------------------------------------
-// Tâche #4 — scrapeReleaseNotes (placeholder)
+// Tâche #4 — scrapeReleaseNotes
 // ---------------------------------------------------------------------------
 
 /**
- * Scrape les release notes Anthropic.
- * @returns {Promise<Array>}
- * TODO: à implémenter (tâche #4)
+ * URL de la page de release notes Anthropic (Zendesk / Intercom Help Center).
+ */
+const RELEASE_NOTES_URL =
+  'https://support.claude.com/en/articles/12138966-release-notes';
+
+/**
+ * Nombre maximum d'entrées retournées.
+ */
+const MAX_RELEASE_ENTRIES = 10;
+
+/**
+ * Scrape les release notes Anthropic depuis la page support.claude.com.
+ *
+ * Structure HTML attendue (Intercom Help Center, vérifié 2026-03-31) :
+ *   <h2 id="h_xxx">Month YYYY</h2>        — en-tête de mois (ignoré)
+ *   <h3 id="h_yyy">Month DD, YYYY</h3>     — date de chaque release
+ *   <div class="intercom-interblocks-paragraph …">
+ *     <p><b>Feature title</b></p>           — titre (premier <p><b> après le h3)
+ *   </div>
+ *   <div class="intercom-interblocks-paragraph …">
+ *     <p>Description text…</p>              — description
+ *   </div>
+ *
+ * Si la structure change, la fonction log un warning et retourne [].
+ *
+ * @returns {Promise<Array<{id: string, title: string, date: string, tag: null, link: string}>>}
  */
 export async function scrapeReleaseNotes() {
-  console.log('[scrapeReleaseNotes] Placeholder — non implémenté');
-  return [];
+  console.log(`[scrapeReleaseNotes] Fetching ${RELEASE_NOTES_URL}`);
+
+  let response;
+  try {
+    response = await fetchWithRetry(RELEASE_NOTES_URL);
+  } catch (error) {
+    console.error(
+      `[scrapeReleaseNotes] Echec définitif après ${RETRY_DELAYS_MS.length + 1} tentatives :`,
+      error.message
+    );
+    return [];
+  }
+
+  const html = response.data;
+  const $ = cheerio.load(html);
+
+  // Sélectionne tous les <h3> avec un id commençant par "h_" — ce sont les entrées de release
+  const h3Elements = $('h3[id^="h_"]');
+
+  if (h3Elements.length === 0) {
+    console.warn(
+      '[scrapeReleaseNotes] Aucun <h3 id="h_…"> trouvé — la structure HTML a peut-être changé'
+    );
+    return [];
+  }
+
+  const entries = [];
+
+  h3Elements.each((_i, h3) => {
+    if (entries.length >= MAX_RELEASE_ENTRIES) return false; // stop à 10
+
+    try {
+      const $h3 = $(h3);
+      const anchorId = $h3.attr('id');
+      const rawDate = $h3.text().trim();
+
+      // Valide que le texte du h3 ressemble à une date (ex: "March 25, 2026")
+      const parsedDate = new Date(rawDate);
+      if (Number.isNaN(parsedDate.getTime())) return; // pas une date, on skip
+
+      // Cherche le titre : premier <b> dans un <p> après ce h3.
+      // On parcourt les siblings suivants (dans le DOM Intercom, les divs suivent le h3).
+      let title = '';
+      let description = '';
+      let sibling = $h3.parent().next();
+
+      // Parcours des blocs paragraphes après le h3
+      while (sibling.length && !sibling.find('h2, h3').length) {
+        const pBold = sibling.find('p > b').first();
+        const pText = sibling.find('p').first();
+
+        if (!title && pBold.length) {
+          // Premier paragraphe avec du gras = titre
+          title = pBold.text().trim();
+        } else if (title && !description && pText.length) {
+          // Deuxième paragraphe avec du texte non-vide = description
+          const text = pText.text().trim();
+          if (text && text !== '\u00a0') {
+            description = text;
+          }
+        }
+
+        if (title && description) break;
+        sibling = sibling.next();
+      }
+
+      if (!title) return; // entrée sans titre, on skip
+
+      // Slug basé sur la date ISO pour un ID stable
+      const dateIso = parsedDate.toISOString();
+      const dateSlug = dateIso.slice(0, 10); // "2026-03-25"
+      const titleSlug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
+        .slice(0, 40);
+      const id = `release-${dateSlug}-${titleSlug}`;
+
+      const link = `${RELEASE_NOTES_URL}#${anchorId}`;
+
+      entries.push({
+        id,
+        title: truncate(title),
+        date: dateIso,
+        tag: null,
+        link,
+      });
+    } catch (parseError) {
+      console.warn(
+        '[scrapeReleaseNotes] Erreur parsing entrée :',
+        parseError.message
+      );
+    }
+  });
+
+  console.log(
+    `[scrapeReleaseNotes] ${entries.length} entrées extraites (sur ${h3Elements.length} h3 trouvés)`
+  );
+  return entries;
 }
 
 // ---------------------------------------------------------------------------
@@ -188,11 +310,27 @@ export async function scrapeReleaseNotes() {
 
 /**
  * Génère un tag catégoriel à partir du titre d'un item.
- * @param {string} _title
- * @returns {string} "Code" | "Cowork" | "Misc"
- * TODO: à implémenter (tâche #5)
+ * Détection simple basée sur mots-clés.
+ *
+ * @param {string} title
+ * @returns {string} "Release" | "Code" | "Misc"
  */
-export function generateTag(_title) {
+export function generateTag(title) {
+  if (!title) return 'Misc';
+
+  const lowerTitle = title.toLowerCase();
+
+  // Mots-clés pour "Release"
+  if (/release|version|update|improved/i.test(lowerTitle)) {
+    return 'Release';
+  }
+
+  // Mots-clés pour "Code"
+  if (/api|function|model/i.test(lowerTitle)) {
+    return 'Code';
+  }
+
+  // Défaut
   return 'Misc';
 }
 
@@ -201,13 +339,31 @@ export function generateTag(_title) {
 // ---------------------------------------------------------------------------
 
 /**
- * Persiste le tableau de news dans news.json.
- * @param {Array} _news
+ * Persiste le tableau de news dans public/news.json.
+ * Format : { timestamp: ISO8601, news: [...] }
+ *
+ * @param {Array<{id, title, date, tag, link}>} news
  * @returns {Promise<void>}
- * TODO: à implémenter (tâche #7)
  */
-export async function writeNews(_news) {
-  console.log('[writeNews] Placeholder — non implémenté');
+export async function writeNews(news) {
+  try {
+    // Détermine le chemin du fichier output.
+    // En local : ../public/news.json (relative au dossier functions/)
+    // En Netlify : process.env.PUBLISH_DIR pointe au répertoire public
+    const publicDir = process.env.PUBLISH_DIR || path.join(process.cwd(), 'public');
+    const outputPath = path.join(publicDir, 'news.json');
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      news,
+    };
+
+    fs.writeFileSync(outputPath, JSON.stringify(payload, null, 2), 'utf8');
+    console.log(`[writeNews] Données persistées dans ${outputPath} (${news.length} items)`);
+  } catch (error) {
+    console.error('[writeNews] Erreur lors de la sauvegarde :', error.message);
+    // failsoft — on continue sans lever l'erreur
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -217,7 +373,14 @@ export async function writeNews(_news) {
 /**
  * Handler principal Netlify Function.
  * Orchestre les scrapers, génère les tags et persiste les données.
- * TODO: orchestration complète (tâche #8)
+ *
+ * Flux :
+ * 1. Scraper Twitter (2 comptes en parallèle)
+ * 2. Scraper Release Notes
+ * 3. Merger + trier par date (récent en premier)
+ * 4. Appliquer generateTag à chaque item
+ * 5. Persister dans news.json
+ * 6. Retourner response avec count + timestamp
  *
  * @param {import('@netlify/functions').HandlerEvent} _req
  * @param {import('@netlify/functions').HandlerContext} _context
@@ -226,25 +389,51 @@ export default async (_req, _context) => {
   try {
     console.log('[handler] Démarrage du job de scraping…');
 
-    // Scraping Twitter pour les 2 comptes en parallèle
-    const [claudeaiTweets, darioTweets] = await Promise.all(
-      TWITTER_HANDLES.map((handle) => scrapeTwitter(handle))
-    );
+    // 1. Scraping Twitter pour les 2 comptes en parallèle
+    const [claudeaiTweets, darioTweets, releaseNotesNews] = await Promise.all([
+      scrapeTwitter('claudeai'),
+      scrapeTwitter('darioamodei'),
+      scrapeReleaseNotes(),
+    ]);
 
-    const allNews = [...claudeaiTweets, ...darioTweets];
+    console.log(`[handler] Twitter @claudeai: ${claudeaiTweets.length} tweets`);
+    console.log(`[handler] Twitter @darioamodei: ${darioTweets.length} tweets`);
+    console.log(`[handler] Release Notes: ${releaseNotesNews.length} entrées`);
 
-    console.log(`[handler] Total items récupérés : ${allNews.length}`);
+    // 2. Merger tous les items
+    let allNews = [...claudeaiTweets, ...darioTweets, ...releaseNotesNews];
+
+    // 3. Trier par date (plus récent d'abord)
+    allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // 4. Appliquer generateTag à chaque item
+    allNews = allNews.map((item) => ({
+      ...item,
+      tag: generateTag(item.title),
+    }));
+
+    console.log(`[handler] Total items après fusion : ${allNews.length}`);
     console.log('[handler] Aperçu (3 premiers) :', JSON.stringify(allNews.slice(0, 3), null, 2));
 
-    // TODO: appeler scrapeReleaseNotes(), generateTag(), writeNews() (tâches #4, #5, #7, #8)
+    // 5. Persister les données (failsoft — writeFileSync() peut ne pas marcher en Netlify)
+    await writeNews(allNews);
 
+    // 6. Retourner response avec données COMPLÈTES (pas juste preview)
+    // Netlify Functions ne garantissent pas writeFileSync() → les données sont dans la réponse
+    // Le frontend ou GitHub Actions peut les utiliser pour créer public/news.json
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Scraping Twitter OK',
+        message: 'Scraping complet',
         count: allNews.length,
         timestamp: new Date().toISOString(),
-        preview: allNews.slice(0, 3),
+        sources: {
+          twitter_claudeai: claudeaiTweets.length,
+          twitter_darioamodei: darioTweets.length,
+          release_notes: releaseNotesNews.length,
+        },
+        // 🔑 Données complètes retournées (pas juste preview)
+        news: allNews,
       }),
     };
   } catch (error) {

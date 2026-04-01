@@ -20,9 +20,19 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Trigger scraper
-        run: npm run scrape
-        # TODO: Call Netlify function or run scraper directly
+      - name: Trigger scraper and capture data
+        run: |
+          curl -s https://timely-llama-e0d105.netlify.app/.netlify/functions/scrape \
+            | jq '{timestamp: .timestamp, count: .count, sources: .sources, news: .news}' \
+            > public/news.json
+
+          # Vérifie que le fichier a du contenu
+          if [ ! -s public/news.json ]; then
+            echo "❌ Erreur: news.json est vide"
+            exit 1
+          fi
+
+          echo "✅ news.json créé avec $(jq '.count' public/news.json) items"
 
       - name: Commit and push if changed
         run: |
