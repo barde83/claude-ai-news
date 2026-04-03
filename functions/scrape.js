@@ -335,6 +335,62 @@ export function generateTag(title) {
 }
 
 // ---------------------------------------------------------------------------
+// Tâche #6b — Cache pour tweets (fallback quand Nitter down)
+// ---------------------------------------------------------------------------
+
+/**
+ * Sauvegarde les tweets scrappés dans un cache local (public/tweets.json).
+ * Utilisé en fallback si Nitter est down.
+ *
+ * @param {Array<{id, title, date, link}>} tweets
+ * @returns {Promise<void>}
+ */
+export async function saveTweetsCache(tweets) {
+  try {
+    const publicDir = process.env.PUBLISH_DIR || path.join(process.cwd(), 'public');
+    const cacheFile = path.join(publicDir, 'tweets.json');
+
+    const cachePayload = {
+      timestamp: new Date().toISOString(),
+      status: 'fresh', // 'fresh' ou 'cached'
+      tweets,
+      note: 'Cache des tweets — mis à jour quand Nitter répond',
+    };
+
+    fs.writeFileSync(cacheFile, JSON.stringify(cachePayload, null, 2), 'utf8');
+    console.log(`[saveTweetsCache] Cache tweets sauvegardé (${tweets.length} items)`);
+  } catch (error) {
+    console.warn('[saveTweetsCache] Erreur sauvegarde cache :', error.message);
+    // Failsoft — on continue
+  }
+}
+
+/**
+ * Charge le cache tweets si disponible (fallback si Nitter down).
+ *
+ * @returns {Promise<Array>}
+ */
+export async function loadTweetsCache() {
+  try {
+    const publicDir = process.env.PUBLISH_DIR || path.join(process.cwd(), 'public');
+    const cacheFile = path.join(publicDir, 'tweets.json');
+
+    if (!fs.existsSync(cacheFile)) {
+      console.log('[loadTweetsCache] Pas de cache disponible');
+      return [];
+    }
+
+    const data = JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
+    const tweets = data.tweets || [];
+    console.log(`[loadTweetsCache] ${tweets.length} tweets chargés du cache`);
+    return tweets;
+  } catch (error) {
+    console.warn('[loadTweetsCache] Erreur chargement cache :', error.message);
+    return [];
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Tâche #7 — writeNews (placeholder)
 // ---------------------------------------------------------------------------
 
@@ -395,19 +451,35 @@ export default async (_req, _context) => {
       setTimeout(() => reject(new Error('Scraping timeout')), 8000)
     );
 
-    const [claudeaiTweets, darioTweets, releaseNotesNews] = await Promise.race([
-      Promise.all([
-        scrapeTwitter('claudeai'),
-        scrapeTwitter('darioamodei'),
-        scrapeReleaseNotes(),
-      ]),
-      timeoutPromise,
-    ]).catch((error) => {
-      console.warn('[handler] Scraping timeout ou erreur, utilisant données vides:', error.message);
-      return [[], [], []]; // Fallback: retourner des arrays vides
-    });
+    let claudeaiTweets, darioTweets, releaseNotesNews;
+    let isUsingCache = false;
 
-    console.log(`[handler] Twitter @claudeai: ${claudeaiTweets.length} tweets`);
+    try {
+      [claudeaiTweets, darioTweets, releaseNotesNews] = await Promise.race([
+        Promise.all([
+          scrapeTwitter('claudeai'),
+          scrapeTwitter('darioamodei'),
+          scrapeReleaseNotes(),
+        ]),
+        timeoutPromise,
+      ]);
+    } catch (error) {
+      console.warn('[handler] Scraping timeout ou erreur:', error.message);
+      // Fallback: charger le cache tweets, vider Release Notes en attente de retry
+      const cachedTweets = await loadTweetsCache();
+      claudeaiTweets = []; // Impossible de différencier, donc vide
+      darioTweets = [];
+      releaseNotesNews = [];
+      // Merger le cache tweets ancien s'il existe
+      if (cachedTweets.length > 0) {
+        console.log('[handler] Utilisant cache tweets en fallback');
+        isUsingCache = true;
+        // Les tweets du cache sont mélangés dans allNews plus bas
+        claudeaiTweets = cachedTweets; // Simplification: tous dans claudeai
+      }
+    }
+
+    console.log(`[handler] Twitter @claudeai: ${claudeaiTweets.length} tweets ${isUsingCache ? '(CACHE)' : '(fresh)'}`);
     console.log(`[handler] Twitter @darioamodei: ${darioTweets.length} tweets`);
     console.log(`[handler] Release Notes: ${releaseNotesNews.length} entrées`);
 
@@ -429,9 +501,16 @@ export default async (_req, _context) => {
     // 5. Persister les données (failsoft — writeFileSync() peut ne pas marcher en Netlify)
     await writeNews(allNews);
 
+    // 5b. Sauvegarder le cache tweets si on a des tweets frais (pas du cache)
+    if (!isUsingCache && claudeaiTweets.length > 0) {
+      const allTweets = [...claudeaiTweets, ...darioTweets];
+      await saveTweetsCache(allTweets);
+    }
+
     // 6. Retourner Response avec données COMPLÈTES (Netlify Functions v2 expects Response object)
     const responseData = {
-      message: 'Scraping complet',
+      message: isUsingCache ? 'Scraping partial (usando cache)' : 'Scraping complet',
+      status: isUsingCache ? 'degraded' : 'ok',
       count: allNews.length,
       timestamp: new Date().toISOString(),
       sources: {

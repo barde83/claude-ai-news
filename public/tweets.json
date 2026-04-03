@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-04-03T06:30:00.000Z",
+  "status": "cached",
+  "tweets": [
+    {
+      "id": "twitter-claudeai-1",
+      "author": "@claudeai",
+      "title": "Check out our latest updates and features",
+      "date": "2026-03-20T10:30:00.000Z",
+      "link": "https://twitter.com/claudeai/status/1"
+    }
+  ],
+  "note": "Cache des tweets — mis à jour quand Nitter répond, servi en fallback quand down"
+}
