@@ -55,7 +55,7 @@ jobs:
           git config user.email "claude@anthropic.com"
           git add -A
           git status
-          if ! git diff --quiet && git diff --staged --quiet; then
+          if ! git diff --staged --quiet; then
             echo "Changes detected, committing..."
             git commit -m "chore: update news" || (echo "Commit failed:" && git status && exit 1)
             echo "Push to origin..."
