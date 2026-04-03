@@ -40,7 +40,14 @@ jobs:
         run: |
           git config user.name "Claude Bot"
           git config user.email "claude@anthropic.com"
-          git config --local credential.helper store
-          echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
           git add -A
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update news" && git push)
+          git status
+          if ! git diff --quiet && git diff --staged --quiet; then
+            echo "Changes detected, committing..."
+            git commit -m "chore: update news" || (echo "Commit failed:" && git status && exit 1)
+            echo "Push to origin..."
+            git push origin main -v 2>&1 || (echo "Push failed:" && git status && exit 1)
+            echo "✅ Push successful"
+          else
+            echo "No changes detected, skipping commit"
+          fi
