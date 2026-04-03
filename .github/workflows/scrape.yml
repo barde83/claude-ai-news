@@ -24,17 +24,30 @@ jobs:
 
       - name: Trigger scraper and capture data
         run: |
-          curl -s https://timely-llama-e0d105.netlify.app/.netlify/functions/scrape \
-            | jq '{timestamp: .timestamp, count: .count, sources: .sources, news: .news}' \
-            > public/news.json
+          echo "Fetching news from Netlify function..."
+          curl -s --max-time 60 https://timely-llama-e0d105.netlify.app/.netlify/functions/scrape > /tmp/scrape_response.json 2>&1
 
-          # Vérifie que le fichier a du contenu
-          if [ ! -s public/news.json ]; then
-            echo "❌ Erreur: news.json est vide"
+          if [ ! -s /tmp/scrape_response.json ]; then
+            echo "❌ Error: Empty response from scraper"
+            cat /tmp/scrape_response.json || echo "(no output)"
             exit 1
           fi
 
-          echo "✅ news.json créé avec $(jq '.count' public/news.json) items"
+          echo "Response received, parsing with jq..."
+          jq '{timestamp: .timestamp, count: .count, sources: .sources, news: .news}' /tmp/scrape_response.json > public/news.json 2>&1 || {
+            echo "❌ Error: Failed to parse JSON"
+            echo "Raw response:"
+            cat /tmp/scrape_response.json | head -50
+            exit 1
+          }
+
+          if [ ! -s public/news.json ]; then
+            echo "❌ Error: news.json is empty"
+            exit 1
+          fi
+
+          ITEM_COUNT=$(jq '.count // 0' public/news.json)
+          echo "✅ news.json created with $ITEM_COUNT items"
 
       - name: Commit and push if changed
         run: |
