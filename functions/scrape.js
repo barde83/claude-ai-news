@@ -33,7 +33,7 @@ const TWITTER_HANDLES = ['claudeai', 'darioamodei'];
 const NITTER_RSS_BASE = 'https://nitter.net';
 
 const HTTP_CONFIG = {
-  timeout: 10_000,
+  timeout: 5_000, // Réduit de 10s à 5s pour fail faster
   headers: {
     'User-Agent':
       'Mozilla/5.0 (compatible; claude-ai-news-scraper/1.0; +https://github.com/anthropic)',
@@ -41,7 +41,7 @@ const HTTP_CONFIG = {
   },
 };
 
-const RETRY_DELAYS_MS = [1000, 2000, 4000]; // backoff exponentiel, 3 tentatives max
+const RETRY_DELAYS_MS = [500]; // Une seule tentative après 500ms (vs 3 tentatives avant)
 
 // ---------------------------------------------------------------------------
 // Utilitaires
@@ -389,12 +389,23 @@ export default async (_req, _context) => {
   try {
     console.log('[handler] Démarrage du job de scraping…');
 
-    // 1. Scraping Twitter pour les 2 comptes en parallèle
-    const [claudeaiTweets, darioTweets, releaseNotesNews] = await Promise.all([
-      scrapeTwitter('claudeai'),
-      scrapeTwitter('darioamodei'),
-      scrapeReleaseNotes(),
-    ]);
+    // 1. Scraping Twitter pour les 2 comptes en parallèle avec timeout global
+    // Promise.race avec timeout pour éviter que tout bloque
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Scraping timeout')), 8000)
+    );
+
+    const [claudeaiTweets, darioTweets, releaseNotesNews] = await Promise.race([
+      Promise.all([
+        scrapeTwitter('claudeai'),
+        scrapeTwitter('darioamodei'),
+        scrapeReleaseNotes(),
+      ]),
+      timeoutPromise,
+    ]).catch((error) => {
+      console.warn('[handler] Scraping timeout ou erreur, utilisant données vides:', error.message);
+      return [[], [], []]; // Fallback: retourner des arrays vides
+    });
 
     console.log(`[handler] Twitter @claudeai: ${claudeaiTweets.length} tweets`);
     console.log(`[handler] Twitter @darioamodei: ${darioTweets.length} tweets`);
