@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-27T09:36:18.609Z",
+  "timestamp": "2026-05-29T09:43:27.048Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-05-28-claude-opus-4-8-launch",
+      "title": "Claude Opus 4.8 launch",
+      "date": "2026-05-28T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_a467350ea5"
+    },
     {
       "id": "release-2026-05-21-claude-now-works-with-more-security-and-",
       "title": "Claude now works with more security and compliance tools",
@@ -69,13 +76,6 @@
       "date": "2026-03-11T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_e67bacbb67"
-    },
-    {
-      "id": "release-2026-03-02-memory-for-free-users",
-      "title": "Memory for free users",
-      "date": "2026-03-02T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_9ec0154553"
     }
   ]
 }
