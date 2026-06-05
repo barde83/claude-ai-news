@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-03T10:49:03.424Z",
+  "timestamp": "2026-06-05T09:37:14.564Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-06-02-enterprise-plans-can-manage-admin-permis",
+      "title": "Enterprise plans can manage admin permissions with custom roles",
+      "date": "2026-06-02T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f49ce4f650"
+    },
     {
       "id": "release-2026-05-28-claude-opus-4-8-launch",
       "title": "Claude Opus 4.8 launch",
@@ -69,13 +76,6 @@
       "date": "2026-03-12T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_33121cff9d"
-    },
-    {
-      "id": "release-2026-03-11-work-across-excel-and-powerpoint",
-      "title": "Work across Excel and PowerPoint",
-      "date": "2026-03-11T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_e67bacbb67"
     }
   ]
 }
