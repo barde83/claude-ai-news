@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-09T09:32:09.298Z",
+  "timestamp": "2026-06-11T10:14:37.626Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-06-09-claude-fable-5-launch",
+      "title": "Claude Fable 5 launch",
+      "date": "2026-06-09T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_1ffae8aad0"
+    },
     {
       "id": "release-2026-06-02-enterprise-plans-can-manage-admin-permis",
       "title": "Enterprise plans can manage admin permissions with custom roles",
@@ -69,13 +76,6 @@
       "date": "2026-03-17T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_6dc0f7cd1b"
-    },
-    {
-      "id": "release-2026-03-12-claude-creates-interactive-charts-diagra",
-      "title": "Claude creates interactive charts, diagrams and visualizations",
-      "date": "2026-03-12T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_33121cff9d"
     }
   ]
 }
