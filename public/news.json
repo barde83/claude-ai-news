@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-11T10:14:37.626Z",
+  "timestamp": "2026-06-13T08:51:12.990Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-06-12-our-statement",
+      "title": "our statement",
+      "date": "2026-06-12T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_2d50c3698b"
+    },
     {
       "id": "release-2026-06-09-claude-fable-5-launch",
       "title": "Claude Fable 5 launch",
@@ -69,13 +76,6 @@
       "date": "2026-03-23T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f8e4032efd"
-    },
-    {
-      "id": "release-2026-03-17-control-cowork-from-your-phone-with-a-pe",
-      "title": "Control Cowork from your phone with a persistent thread (research preview for Pro/Max)",
-      "date": "2026-03-17T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_6dc0f7cd1b"
     }
   ]
 }
