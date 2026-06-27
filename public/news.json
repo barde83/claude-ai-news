@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-25T08:52:27.835Z",
+  "timestamp": "2026-06-27T08:29:44.788Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,20 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-06-25-enable-trusted-devices-for-remote-contro",
+      "title": "Enable Trusted Devices for Remote Control",
+      "date": "2026-06-25T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_d99d99e61a"
+    },
+    {
+      "id": "release-2026-06-23-delegate-work-to-claude-in-slack-with-cl",
+      "title": "Delegate work to Claude in Slack with Claude Tag",
+      "date": "2026-06-23T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f8b9fefd18"
+    },
     {
       "id": "release-2026-06-12-our-statement",
       "title": "our statement",
@@ -62,20 +76,6 @@
       "date": "2026-04-09T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_088bbb47b1"
-    },
-    {
-      "id": "release-2026-03-25-interactive-apps-in-claude-for-ios-and-a",
-      "title": "Interactive apps in Claude for iOS and Android",
-      "date": "2026-03-25T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_cf2f800398"
-    },
-    {
-      "id": "release-2026-03-23-computer-use-research-preview-in-cowork-",
-      "title": "Computer use research preview in Cowork and Claude Code + Dispatch improvements",
-      "date": "2026-03-23T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f8e4032efd"
     }
   ]
 }
