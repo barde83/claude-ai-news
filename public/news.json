@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-29T10:46:12.829Z",
+  "timestamp": "2026-07-01T09:36:13.928Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-06-30-claude-sonnet-5-launch",
+      "title": "Claude Sonnet 5 launch",
+      "date": "2026-06-30T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_20613bbcea"
+    },
     {
       "id": "release-2026-06-25-enable-trusted-devices-for-remote-contro",
       "title": "Enable Trusted Devices for Remote Control",
@@ -69,13 +76,6 @@
       "date": "2026-04-16T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_5415f092c2"
-    },
-    {
-      "id": "release-2026-04-09-claude-cowork-generally-available",
-      "title": "Claude Cowork generally available",
-      "date": "2026-04-09T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_088bbb47b1"
     }
   ]
 }
