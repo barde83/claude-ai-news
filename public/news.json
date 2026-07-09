@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-07T09:31:31.830Z",
+  "timestamp": "2026-07-09T09:28:25.564Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-07-07-claude-cowork-on-web-and-mobile",
+      "title": "Claude Cowork on web and mobile",
+      "date": "2026-07-07T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_06f5924d74"
+    },
     {
       "id": "release-2026-07-01-access-to-claude-fable-5-and-claude-myth",
       "title": "Access to Claude Fable 5 and Claude Mythos 5 restored",
@@ -69,13 +76,6 @@
       "date": "2026-05-21T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_1dae2a0c65"
-    },
-    {
-      "id": "release-2026-04-17-claude-design-by-anthropic-labs",
-      "title": "Claude Design by Anthropic Labs",
-      "date": "2026-04-17T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_63ecf85ba7"
     }
   ]
 }
