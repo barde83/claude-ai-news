@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-09T09:28:25.564Z",
+  "timestamp": "2026-07-11T07:46:07.335Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-07-09-a-new-way-to-reflect-with-claude",
+      "title": "A new way to reflect with Claude",
+      "date": "2026-07-09T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_881cb4b0e7"
+    },
     {
       "id": "release-2026-07-07-claude-cowork-on-web-and-mobile",
       "title": "Claude Cowork on web and mobile",
@@ -69,13 +76,6 @@
       "date": "2026-05-28T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_a467350ea5"
-    },
-    {
-      "id": "release-2026-05-21-claude-now-works-with-more-security-and-",
-      "title": "Claude now works with more security and compliance tools",
-      "date": "2026-05-21T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_1dae2a0c65"
     }
   ]
 }
