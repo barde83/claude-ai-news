@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-13T08:57:19.460Z",
+  "timestamp": "2026-07-15T07:57:05.776Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -7,6 +7,13 @@
     "release_notes": 10
   },
   "news": [
+    {
+      "id": "release-2026-07-14-hipaa-configuration-for-your-claude-orga",
+      "title": "HIPAA configuration for your Claude organizations is now self-serve",
+      "date": "2026-07-14T00:00:00.000Z",
+      "tag": "Misc",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_a90c8544e7"
+    },
     {
       "id": "release-2026-07-09-a-new-way-to-reflect-with-claude",
       "title": "A new way to reflect with Claude",
@@ -69,13 +76,6 @@
       "date": "2026-06-02T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f49ce4f650"
-    },
-    {
-      "id": "release-2026-05-28-claude-opus-4-8-launch",
-      "title": "Claude Opus 4.8 launch",
-      "date": "2026-05-28T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_a467350ea5"
     }
   ]
 }
