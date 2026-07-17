@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-15T07:57:05.776Z",
+  "timestamp": "2026-07-17T07:59:51.756Z",
   "count": 10,
   "sources": {
     "twitter_claudeai": 0,
@@ -13,6 +13,13 @@
       "date": "2026-07-14T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_a90c8544e7"
+    },
+    {
+      "id": "release-2026-07-10-updated-memory-for-claude",
+      "title": "Updated memory for Claude",
+      "date": "2026-07-10T00:00:00.000Z",
+      "tag": "Release",
+      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_85f9018be8"
     },
     {
       "id": "release-2026-07-09-a-new-way-to-reflect-with-claude",
@@ -69,13 +76,6 @@
       "date": "2026-06-09T00:00:00.000Z",
       "tag": "Misc",
       "link": "https://support.claude.com/en/articles/12138966-release-notes#h_1ffae8aad0"
-    },
-    {
-      "id": "release-2026-06-02-enterprise-plans-can-manage-admin-permis",
-      "title": "Enterprise plans can manage admin permissions with custom roles",
-      "date": "2026-06-02T00:00:00.000Z",
-      "tag": "Misc",
-      "link": "https://support.claude.com/en/articles/12138966-release-notes#h_f49ce4f650"
     }
   ]
 }
